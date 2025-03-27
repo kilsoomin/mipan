@@ -7,11 +7,19 @@ import time
 from datetime import datetime
 import pandas as pd
 import uuid
+import tempfile
 
 # Firebase 연결
 if not firebase_admin._apps:
+    # 🔥 secrets에서 JSON 문자열 불러오기
     firebase_config = json.loads(st.secrets["firebase"])
-    cred = credentials.Certificate._from_parsed_json(firebase_config)  # ✅ 이 부분이 핵심!
+    
+    # 🔥 임시 파일에 JSON 저장
+    with tempfile.NamedTemporaryFile(mode="w+", suffix=".json", delete=False) as f:
+        json.dump(firebase_config, f)
+        f.flush()
+        cred = credentials.Certificate(f.name)
+
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'
     })
