@@ -9,21 +9,23 @@ import pandas as pd
 import uuid
 import os
 
+# 서비스 계정 키 파일 경로 (같은 폴더에 있어야 함)
+firebase_key_path = "jaegodata-c89b1-firebase-adminsdk-fbsvc-6ec8b5d4cd.json"  # 파일명 수정
+
 # Firebase 연결
 if not firebase_admin._apps:
-    firebase_config = json.loads(st.secrets["firebase"])
-
-    # 임시 파일 경로 지정 (Streamlit Cloud는 /tmp 폴더만 사용 가능)
-    json_path = "/tmp/firebase_key.json"
-
-    # JSON을 직접 파일로 저장
-    with open(json_path, "w") as f:
-        json.dump(firebase_config, f)
-
-    # 인증
-    cred = credentials.Certificate(json_path)
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'
+    if os.path.exists(firebase_key_path):  # 로컬에 파일이 있는지 확인
+        try:
+            # .json 파일을 이용해 Firebase 인증
+            cred = credentials.Certificate(firebase_key_path)
+            firebase_admin.initialize_app(cred, {
+                'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'
+            })
+            print("Firebase 인증 성공!")
+        except Exception as e:
+            print(f"Firebase 인증 실패: {e}")
+    else:
+        print("서비스 계정 키 파일을 찾을 수 없습니다. 파일을 올바른 경로에 저장해주세요.")
     })
 
 # ✅ 페이지 설정
