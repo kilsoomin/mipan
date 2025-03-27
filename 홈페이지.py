@@ -11,15 +11,16 @@ import tempfile
 
 # Firebase 연결
 if not firebase_admin._apps:
-    # 🔥 secrets에서 JSON 문자열 불러오기
+    # 1. secrets에서 firebase config 가져오기
     firebase_config = json.loads(st.secrets["firebase"])
-    
-    # 🔥 임시 파일에 JSON 저장
-    with tempfile.NamedTemporaryFile(mode="w+", suffix=".json", delete=False) as f:
-        json.dump(firebase_config, f)
-        f.flush()
-        cred = credentials.Certificate(f.name)
 
+    # 2. 임시 파일 생성 후 JSON 저장 (파일 닫힌 후 경로만 사용)
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+        json.dump(firebase_config, f)
+        temp_path = f.name  # 경로만 저장
+
+    # 3. 경로를 통해 인증 연결
+    cred = credentials.Certificate(temp_path)
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'
     })
