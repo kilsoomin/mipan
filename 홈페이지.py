@@ -9,23 +9,17 @@ import pandas as pd
 import uuid
 import os
 
-# 서비스 계정 키 파일 경로 (같은 폴더에 있어야 함)
-firebase_key_path = "jaegodata-c89b1-firebase-adminsdk-fbsvc-6ec8b5d4cd.json"
-
-# Firebase 연결
+# Firebase 인증 처리
 if not firebase_admin._apps:
-    if os.path.exists(firebase_key_path):  # 로컬에 파일이 있는지 확인
-        try:
-            # .json 파일을 이용해 Firebase 인증
-            cred = credentials.Certificate(firebase_key_path)
-            firebase_admin.initialize_app(cred, {
-                'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'
-            })
-            print("Firebase 인증 성공!")
-        except Exception as e:
-            print(f"Firebase 인증 실패: {e}")
-    else:
-        print("서비스 계정 키 파일을 찾을 수 없습니다. 파일을 올바른 경로에 저장해주세요.")
+    firebase_config = st.secrets["firebase"]  # Streamlit Secrets에서 Firebase 인증 정보를 가져옵니다.
+    
+    # Firebase 인증 처리
+    cred = credentials.Certificate(firebase_config)  # 인증 객체 생성
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'  # Firebase Realtime Database URL
+    })
+    
+    st.success("Firebase 인증 성공!")
 
 # ✅ 페이지 설정
 # 제목 대신, 여백 최소화된 h4 사용
