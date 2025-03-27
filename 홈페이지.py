@@ -16,7 +16,7 @@ if not firebase_admin._apps:
     # Firebase 인증 처리
     cred = credentials.Certificate(firebase_config)  # 인증 객체 생성
     firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'  # Firebase Realtime Database URL
+        'databaseURL': 'https://mipan-f7cd2-default-rtdb.asia-southeast1.firebasedatabase.app/'  # Firebase Realtime Database URL
     })
     
     st.success("Firebase 인증 성공!")
