@@ -10,10 +10,7 @@ import uuid
 import os
 
 # 서비스 계정 키 파일 경로 (같은 폴더에 있어야 함)
-firebase_key_path = "jaegodata-c89b1-firebase-adminsdk-fbsvc-6ec8b5d4cd.json"  # 파일명 수정
-
-# 서비스 계정 키 파일 경로 (같은 폴더에 있어야 함)
-firebase_key_path = "jaegodata-c89b1-firebase-adminsdk-fbsvc-6ec8b5d4cd.json"  # 파일명 수정
+firebase_key_path = "jaegodata-c89b1-firebase-adminsdk-fbsvc-6ec8b5d4cd.json"
 
 # Firebase 연결
 if not firebase_admin._apps:
@@ -22,7 +19,7 @@ if not firebase_admin._apps:
             # .json 파일을 이용해 Firebase 인증
             cred = credentials.Certificate(firebase_key_path)
             firebase_admin.initialize_app(cred, {
-                'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'  # URL 끝부분에 추가된 괄호가 누락될 수 있음
+                'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'
             })
             print("Firebase 인증 성공!")
         except Exception as e:
