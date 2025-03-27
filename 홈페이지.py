@@ -8,11 +8,10 @@ from datetime import datetime
 import pandas as pd
 import uuid
 
-# ✅ 배포용: Streamlit Cloud 환경에서 secrets 사용
+# Firebase 연결
 if not firebase_admin._apps:
-    # 🔥 여기 수정!
     firebase_config = json.loads(st.secrets["firebase"])
-    cred = credentials.Certificate.from_json(firebase_config)
+    cred = credentials.Certificate._from_parsed_json(firebase_config)  # ✅ 이 부분이 핵심!
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'
     })
