@@ -9,17 +9,18 @@ import pandas as pd
 import uuid
 import os
 
-# Firebase 인증 처리
+# Firebase 인증 처리 없이 데이터베이스에 접근하는 코드
 if not firebase_admin._apps:
-    firebase_config = st.secrets["firebase"]  # Streamlit Secrets에서 Firebase 인증 정보를 가져옵니다.
-    
-    # Firebase 인증 처리
-    cred = credentials.Certificate(firebase_config)  # 인증 객체 생성
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://mipan-f7cd2-default-rtdb.asia-southeast1.firebasedatabase.app/'  # Firebase Realtime Database URL
+    # Firebase Realtime Database URL
+    database_url = 'https://mipan-f7cd2-default-rtdb.asia-southeast1.firebasedatabase.app/'
+
+    # 인증 없이 접근하려면 Firebase Admin SDK 인증을 생략
+    firebase_admin.initialize_app(None, {
+        'databaseURL': database_url
     })
-    
-    st.success("Firebase 인증 성공!")
+
+    # Firebase 인증 없이 성공 메시지 출력
+    st.success("Firebase 인증 없이 연결 성공!")
 
 # ✅ 페이지 설정
 # 제목 대신, 여백 최소화된 h4 사용
