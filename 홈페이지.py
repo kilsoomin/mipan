@@ -7,20 +7,21 @@ import time
 from datetime import datetime
 import pandas as pd
 import uuid
-import tempfile
+import os
 
 # Firebase 연결
 if not firebase_admin._apps:
-    # 1. secrets에서 firebase config 가져오기
     firebase_config = json.loads(st.secrets["firebase"])
 
-    # 2. 임시 파일 생성 후 JSON 저장 (파일 닫힌 후 경로만 사용)
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
-        json.dump(firebase_config, f)
-        temp_path = f.name  # 경로만 저장
+    # 임시 파일 경로 지정 (Streamlit Cloud는 /tmp 폴더만 사용 가능)
+    json_path = "/tmp/firebase_key.json"
 
-    # 3. 경로를 통해 인증 연결
-    cred = credentials.Certificate(temp_path)
+    # JSON을 직접 파일로 저장
+    with open(json_path, "w") as f:
+        json.dump(firebase_config, f)
+
+    # 인증
+    cred = credentials.Certificate(json_path)
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'
     })
