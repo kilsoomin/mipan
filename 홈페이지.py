@@ -9,7 +9,7 @@ import uuid
 
 # ✅ 배포용: Streamlit Cloud 환경에서 secrets 사용
 if not firebase_admin._apps:
-    cred = credentials.Certificate(st.secrets["firebase"])
+    cred = credentials.Certificate.from_json(json.loads(st.secrets["firebase"]))  # ✅ 수정
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'
     })
