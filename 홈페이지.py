@@ -12,6 +12,9 @@ import os
 # 서비스 계정 키 파일 경로 (같은 폴더에 있어야 함)
 firebase_key_path = "jaegodata-c89b1-firebase-adminsdk-fbsvc-6ec8b5d4cd.json"  # 파일명 수정
 
+# 서비스 계정 키 파일 경로 (같은 폴더에 있어야 함)
+firebase_key_path = "jaegodata-c89b1-firebase-adminsdk-fbsvc-6ec8b5d4cd.json"  # 파일명 수정
+
 # Firebase 연결
 if not firebase_admin._apps:
     if os.path.exists(firebase_key_path):  # 로컬에 파일이 있는지 확인
@@ -19,14 +22,13 @@ if not firebase_admin._apps:
             # .json 파일을 이용해 Firebase 인증
             cred = credentials.Certificate(firebase_key_path)
             firebase_admin.initialize_app(cred, {
-                'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'
+                'databaseURL': 'https://jaegodata-c89b1-default-rtdb.asia-southeast1.firebasedatabase.app/'  # URL 끝부분에 추가된 괄호가 누락될 수 있음
             })
             print("Firebase 인증 성공!")
         except Exception as e:
             print(f"Firebase 인증 실패: {e}")
     else:
         print("서비스 계정 키 파일을 찾을 수 없습니다. 파일을 올바른 경로에 저장해주세요.")
-    })
 
 # ✅ 페이지 설정
 # 제목 대신, 여백 최소화된 h4 사용
